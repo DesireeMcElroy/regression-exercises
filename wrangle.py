@@ -51,6 +51,12 @@ def prep_telco(df):
     # change my total charges column to a float
     df.total_charges = df.total_charges.astype('float')
 
+    # replace 0 tenure months with 1
+    df.tenure = df.tenure.replace(0, 1)
+
+    # reset index
+    df.reset_index(inplace=True)
+
     return df
 
 
@@ -63,6 +69,9 @@ def telco_split(df):
                                         random_state=123)
     train, validate = train_test_split(train_validate, test_size=.3, 
                                    random_state=123)
+    print('train--->', train.shape)
+    print('validate--->', validate.shape)
+    print('test--->', test.shape)
     return train, validate, test
 
 
@@ -89,5 +98,5 @@ def get_zillow():
 
 def prep_zillow(df):
     df.dropna(inplace=True)
-
+    df.reset_index(inplace=True)
     return df
