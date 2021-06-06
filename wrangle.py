@@ -69,6 +69,7 @@ def telco_split(df):
                                         random_state=123)
     train, validate = train_test_split(train_validate, test_size=.3, 
                                    random_state=123)
+
     print('train--->', train.shape)
     print('validate--->', validate.shape)
     print('test--->', test.shape)
