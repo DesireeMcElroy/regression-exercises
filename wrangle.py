@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
+import sklearn.preprocessing 
+from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
 
 
 ## acquire data
@@ -101,3 +103,27 @@ def prep_zillow(df):
     df.dropna(inplace=True)
     df.reset_index(inplace=True)
     return df
+
+
+
+
+## MinMax Scaler function
+
+def minmax_scaler(train, validate, test):
+
+    # create my variable to columns
+    cols = ['monthly_charges', 'total_charges', 'tenure']
+    
+    # assign my scaler
+    scaler = MinMaxScaler()
+    
+    for col in cols:
+    
+        # apply fit_transform to train dataset
+        train[col] = scaler.fit_transform(train[[col]])
+        
+        # apply transform to validate and test set
+        validate[col] = scaler.transform(validate[[col]])
+        test[col] = scaler.transform(test[[col]])
+    
+    return train, validate, test
