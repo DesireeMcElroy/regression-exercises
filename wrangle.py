@@ -4,6 +4,11 @@ from sklearn.model_selection import train_test_split
 import sklearn.preprocessing 
 from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
 
+from sklearn.linear_model import LinearRegression
+from sklearn.feature_selection import RFE
+
+from sklearn.feature_selection import SelectKBest, f_regression
+
 
 ## acquire data
 
@@ -187,25 +192,26 @@ def min_max_scale(X_train, X_validate, X_test, numeric_cols):
 
 
 
-def select_kbest(X_train, y_train, no_features):
+def select_kbest(X_train_scaled, y_train, no_features):
     
     # using kbest
     f_selector = SelectKBest(score_func=f_regression, k=no_features)
     
     # fit
-    f_selector.fit(X_train, y_train)
+    f_selector.fit(X_train_scaled, y_train)
 
     # display the two most important features
     mask = f_selector.get_support()
     
-    return x_train.columns[mask]
+    return X_train_scaled.columns[mask]
 
 
-def rfe(x_train, y_train, no_features):
+
+def rfe(X_train_scaled, y_train, no_features):
     # now using recursive feature elimination
     lm = LinearRegression()
     rfe = RFE(estimator=lm, n_features_to_select=no_features)
-    rfe.fit(x_train, y_train)
+    rfe.fit(X_train_scaled, y_train)
 
     # returning the top chosen features
-    return x_train.columns[rfe.support_]
+    return X_train_scaled.columns[rfe.support_]
